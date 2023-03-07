@@ -1,3 +1,5 @@
+
+//IIFE
 let pokemonRepository = (function () {
     let pokemonList= [
         {name:"Bulbasaur",types:["grass","poison"],height:0.7,weight:6.9},
@@ -5,11 +7,16 @@ let pokemonRepository = (function () {
         {name:"Squirtle",types:["water"],height:0.5,weight:9},
         {name:"Ivysaur",types:["grass","poison"],height:1,weight:13},
     ];
-
+//added validation typeof to ensure the right data types will be added in the array 
     function add(pokemon){
-        pokemonList.push(pokemon);
+        if(
+            typeof pokemon === 'object' &&'name' 
+        ){
+            pokemonList.push(pokemon);
+        }else{
+            console.log('wrong data type')
+        }
     }
-
     function getAll(){
         return pokemonList;
     }
@@ -21,6 +28,8 @@ let pokemonRepository = (function () {
     };
 })();
 
+
+
 //using add() to add a new pokemon to the List 
 pokemonRepository.add({name:"Charmeleon",type:["fire"],height:1.1,weight:19});
 
@@ -31,4 +40,4 @@ pokemonRepository.getAll().forEach(function(pokemon) {
     document.write(pokemon.name + " (height: " + pokemon.height + "m)</br>"); 
     });
 
-
+    
