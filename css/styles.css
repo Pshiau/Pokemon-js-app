@@ -8,9 +8,26 @@ body {
 
 h1{
     font-family: "Noto",sans-serif; 
-    font-size: 16px;
+    font-size: 18px;
     line-height: 1.6;
-    color: darkcyan;
+    color: green;
     font:bold;
 }
 
+.button-class{
+    background-color: green;
+    border: none;
+    color:aliceblue;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s;/*Safari*/
+    transition-duration: 0.4s;
+    cursor: ponter;
+    background-color: white;
+    color:black;
+    border: 2px solid green;
+}
