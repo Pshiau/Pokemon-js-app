@@ -7,10 +7,13 @@ let pokemonRepository = (function () {
         {name:"Squirtle",types:["water"],height:0.5,weight:9},
         {name:"Ivysaur",types:["grass","poison"],height:1,weight:13},
     ];
-//added validation typeof to ensure the right data types will be added in the array 
+    //added validation typeof to ensure the right data types will be added in the array 
     function add(pokemon){
         if(
-            typeof pokemon === 'object' &&'name' 
+            //noted "in" used
+            typeof pokemon === "object" && "name" in pokemon 
+            && "height" in pokemon 
+            && "types" in pokemon
         ){
             pokemonList.push(pokemon);
         }else{
@@ -30,14 +33,16 @@ let pokemonRepository = (function () {
 
 
 
-//using add() to add a new pokemon to the List 
-pokemonRepository.add({name:"Charmeleon",type:["fire"],height:1.1,weight:19});
+//add() a new pokemon to the List 
+pokemonRepository.add({ name:"Charmeleon",types:["fire"],height:1.1,weight:19});
+pokemonRepository.add({ name: "Pikachu", height: 0.3, types: ["electric"] });
 
 
 //calling pokemonList from getAll() 
-//and then use forEach() to iterate over the name & height of Pokemon from list
-pokemonRepository.getAll().forEach(function(pokemon) {
-    document.write(pokemon.name + " (height: " + pokemon.height + "m)</br>"); 
-    });
+console.log(pokemonRepository.getAll());
+
+pokemonRepository.getAll().forEach(function (pokemon) {
+    pokemonRepository.addListItem(pokemon);
+  });
 
     
