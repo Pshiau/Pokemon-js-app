@@ -1,13 +1,13 @@
 
 //IIFE
 let pokemonRepository = (function () {
-    let pokemonList= [];
-    let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
-    
+    const pokemonList= [];
+    const apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
+    const loader = document.getElementById("loading");
     
     function add(pokemon){
         if(
-            //noted "in" used
+            //right type of data validation function
             typeof pokemon === "object" && 
             "name" in pokemon &&
             "detailsUrl" in pokemon
@@ -42,24 +42,32 @@ let pokemonRepository = (function () {
     }
 
     function loadList(){
+        showLoadingMessage();
         return fetch(apiUrl).then(function(response){
             return response.json();
-        }).then(function(json){
+        }).then(function(json){ 
+            // on Success getting pokemons
+            hideLoadingMessage();
             json.results.forEach(function(item){
                 let pokemon = {
                     name: item.name,
                     detailsUrl: item.url
                 };
                 add(pokemon);
-                console.log(pokemon);
+                //console.log(pokemon);
             });
-        }).catch(function(e){
+        }).catch(function(e){ 
+            // on failure
+            hideLoadingMessage();
             console.error(e);
-        })
+        });
+
+        button.createElement
     }
     
     function loadDetails(item) {
         let url = item.detailsUrl;
+        showLoadingMessage();
         return fetch(url).then(function (response) {
           return response.json();
         }).then(function (details) {
@@ -79,10 +87,22 @@ let pokemonRepository = (function () {
             // console.log(item.types)
             
         }).catch(function (e) {
-          console.error(e);
+            hideLoadingMessage();
+            console.error(e);
         });
-      }
+    }
 
+    function showLoadingMessage()
+    {
+        console.log("loading");
+        loader.classList.remove("hide-loader");
+    };
+
+    function hideLoadingMessage()
+    {
+        console.log("hiding loading msg");
+        loader.classList.add("hide-loader");
+    };
 
     //using the function keyword, then only return the key-value pairs 
    
@@ -93,6 +113,8 @@ let pokemonRepository = (function () {
         showDetails:showDetails,
         loadList:loadList,
         loadDetails:loadDetails,
+        showLoadingMessage:showLoadingMessage,
+        hideLoadingMessage:hideLoadingMessage
 
     };
 })();
