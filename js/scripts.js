@@ -63,11 +63,21 @@ let pokemonRepository = (function () {
         return fetch(url).then(function (response) {
           return response.json();
         }).then(function (details) {
-          //add the details to the item
-          item.imageUrl = details.sprites.front_default;
-          item.height = details.height;
-          item.types = details.types;
-          //types show array, to be opimised**
+             //add the details to the item
+            item.imageUrl = details.sprites.front_default;
+            item.height = details.height;
+           
+            
+            let typesStr = '';
+            details.types.forEach(function(t) {
+                typesStr += t.type.name + " "
+            });
+            item.types = typesStr.trimEnd();
+            console.log(typesStr)
+            // Alternatively, can use Map function to display array items 
+            // item.types = details.types.map(function(t){ return t.type.name});
+            // console.log(item.types)
+            
         }).catch(function (e) {
           console.error(e);
         });
