@@ -28,9 +28,14 @@ let pokemonRepository = (function () {
         let listpokemon = document.createElement("li");
         let button = document.createElement("button");
         button.innerText =pokemon.name;
-        button.classList.add("button-class");
+        button.classList.add("button-class","show-modal","btn","btn-outline-info");
+        button.setAttribute("data-toggle", "modal");
+        button.setAttribute("data-target", "#modal-container");
+
+        listpokemon.classList.add("list-group-item");
         listpokemon.appendChild(button);
         pokemonList.appendChild(listpokemon);
+        
         //add event listener to the button
         button.addEventListener('click', function(event) {
             showDetails(pokemon);
@@ -104,30 +109,60 @@ let pokemonRepository = (function () {
         loader.classList.add("hide-loader");
     };
 
+
+ 
+      
+    
+
     function showModal(title,text,image) {
       
         modalContainer.innerHTML = " ";
         let modal = document.createElement('div');
-        modal.classList.add("modal");
+        modal.classList.add("modal fade");
+        // modal.tabIndex.add=("-1");
+        // modal.id.add=("modal-container");
+        // modal.role.add=("dialog");
+        // modal.setAttribute=("ariaria-labelledby","modal-container-label");
+        // modal.ariaHidden.add=("true")
+
+
+       
+
+        let modalDialog = document.createElement('div');
+        modal.classList.add("modal-dialog");
+        modal.role.add("document")
+
+
+        let contentElement = document.createElement ('div');
+        contentElement.classList.add("modal-content");
+        contentElement.innerHTML = text;
+
+        let headerElement = document.createElement("div");
+        headerElement.classList.add("modal-header");
+        
 
         let closeButtonElement = document.createElement('button');
-        closeButtonElement.classList.add("modal-close");
+        closeButtonElement.classList.add("close");
         closeButtonElement.innerText = "Close";
+        // closeButtonElement.setAttribute=("data-dismiss","modal")
+        // closeButtonElement.setAttribute=("aria-label","close");
         closeButtonElement.addEventListener('click',hideModal);
 
+        
 
-        // what is the different between innerText and innerHTML?
-        let titleElement = document.createElement ('h1');
+        
+        let titleElement = document.createElement ('h5');
+        titleElement.classList.add("modal-title");
         titleElement.innerText = title;
 
-        let contentElement = document.createElement ('p');
-        contentElement.innerHTML = text;
+        
 
         // load images
         let imageElement = document.createElement("img");
         imageElement.src =image
 
         modal.appendChild(closeButtonElement);
+        modal.appendChild(modalDialog);
         modal.appendChild(titleElement);
         modal.appendChild(contentElement);
         modal.appendChild(imageElement);
