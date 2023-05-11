@@ -83,6 +83,7 @@ let pokemonRepository = (function () {
             pokemonDetails.imageUrl = details.sprites.front_default;
             pokemonDetails.height = details.height;
             pokemonDetails.weight = details.weight;
+            
            
             
             let typesStr = " ";
@@ -128,12 +129,16 @@ let pokemonRepository = (function () {
         const pokeImage = document.createElement("img");
         pokeImage.src = pokemonDetails.imageUrl;
         const pokeWeight = document.createElement('div');
-        pokeWeight.innerHTML = `<p><span style="font-weight:bold">Weight:</span> ${pokemonDetails.weight}</p>`
+        pokeWeight.innerHTML = `<p><span style="font-weight:bold">Weight:</span> ${pokemonDetails.weight}lbs.</p>`
         const pokeHeight = document.createElement('div');
         pokeHeight.innerHTML = `<p><span style="font-weight:bold">Height:</span> ${pokemonDetails.height}</p>`
+        const pokeTypes = document.createElement('div');
+        pokeTypes.innerHTML=`<p><span style="font-weight:bold">Types:</span> ${pokemonDetails.types}</p>`
+
         modalBody.append(pokeImage);
         modalBody.append(pokeHeight);
         modalBody.append(pokeWeight);
+        modalBody.append(pokeTypes);
 
     }
 
