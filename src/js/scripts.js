@@ -1,4 +1,3 @@
-
 //IIFE
 let pokemonRepository = (function () {
     const pokemonList= [];
@@ -43,8 +42,10 @@ let pokemonRepository = (function () {
     }
 
     function showDetails(pokemon){
-        loadDetails(pokemon).then(function(){
-           showModal(pokemon.name,"Height: " + pokemon.height/10+ "m"+"<br>"+ "Type: "+ pokemon.types, pokemon.imageUrl);
+        loadDetails(pokemon).then(function(pokemonDetails){
+            console.log("POkesdfsdmonDetails", pokemonDetails)
+           //showModal(pokemon.name,"Height: " + pokemon.height/10+ "m"+"<br>"+ "Type: "+ pokemon.types, pokemon.imageUrl);
+           showModal(pokemonDetails);
         });
     }
 
@@ -72,22 +73,25 @@ let pokemonRepository = (function () {
     
     function loadDetails(item) {
         let url = item.detailsUrl;
+        const pokemonDetails = {name: item.name};
         showLoadingMessage();
         return fetch(url).then(function (response) {
           return response.json();
         }).then(function (details) {
             hideLoadingMessage();
              //add the details to the item
-            item.imageUrl = details.sprites.front_default;
-            item.height = details.height;
+            pokemonDetails.imageUrl = details.sprites.front_default;
+            pokemonDetails.height = details.height;
+            pokemonDetails.weight = details.weight;
            
             
             let typesStr = " ";
             details.types.forEach(function(t) {
                 typesStr += t.type.name + "  "
             });
-            item.types = typesStr.trimEnd();
-            console.log(typesStr)
+            pokemonDetails.types = typesStr.trimEnd();
+            console.log(pokemonDetails)
+            return pokemonDetails;
 
             // Alternatively, can use Map function to display array items 
             // item.types = details.types.map(function(t){ return t.type.name});
@@ -110,65 +114,26 @@ let pokemonRepository = (function () {
     };
 
 
- 
-      
-    
+    function showModal(pokemonDetails) {
+        // Read modal parts
+        const modalTitle = document.querySelector(".modal-title");
+        const modalBody = document.querySelector(".modal-body");
 
-    function showModal(title,text,image) {
-      
-        modalContainer.innerHTML = " ";
-        let modal = document.createElement('div');
-        modal.classList.add("modal fade");
-        // modal.tabIndex.add=("-1");
-        // modal.id.add=("modal-container");
-        // modal.role.add=("dialog");
-        // modal.setAttribute=("ariaria-labelledby","modal-container-label");
-        // modal.ariaHidden.add=("true")
+        //clean modal content first
+        modalBody.innerText = ''
 
 
-       
-
-        let modalDialog = document.createElement('div');
-        modal.classList.add("modal-dialog");
-        modal.role.add("document")
-
-
-        let contentElement = document.createElement ('div');
-        contentElement.classList.add("modal-content");
-        contentElement.innerHTML = text;
-
-        let headerElement = document.createElement("div");
-        headerElement.classList.add("modal-header");
-        
-
-        let closeButtonElement = document.createElement('button');
-        closeButtonElement.classList.add("close");
-        closeButtonElement.innerText = "Close";
-        // closeButtonElement.setAttribute=("data-dismiss","modal")
-        // closeButtonElement.setAttribute=("aria-label","close");
-        closeButtonElement.addEventListener('click',hideModal);
-
-        
-
-        
-        let titleElement = document.createElement ('h5');
-        titleElement.classList.add("modal-title");
-        titleElement.innerText = title;
-
-        
-
-        // load images
-        let imageElement = document.createElement("img");
-        imageElement.src =image
-
-        modal.appendChild(closeButtonElement);
-        modal.appendChild(modalDialog);
-        modal.appendChild(titleElement);
-        modal.appendChild(contentElement);
-        modal.appendChild(imageElement);
-        modalContainer.appendChild(modal);
-
-        modalContainer.classList.add('is-visible');
+        // attach details to it
+        modalTitle.innerText = pokemonDetails.name;
+        const pokeImage = document.createElement("img");
+        pokeImage.src = pokemonDetails.imageUrl;
+        const pokeWeight = document.createElement('div');
+        pokeWeight.innerHTML = `<p><span style="font-weight:bold">Weight:</span> ${pokemonDetails.weight}</p>`
+        const pokeHeight = document.createElement('div');
+        pokeHeight.innerHTML = `<p><span style="font-weight:bold">Height:</span> ${pokemonDetails.height}</p>`
+        modalBody.append(pokeImage);
+        modalBody.append(pokeHeight);
+        modalBody.append(pokeWeight);
 
     }
 
@@ -176,26 +141,7 @@ let pokemonRepository = (function () {
         modalContainer.classList.remove('is-visible');
     }
 
-    window.addEventListener('keydown', (e) =>{
-        let modalContainer = document.querySelector
-        ('#modal-container');
-        if (e.key === 'Escape' && 
-        modalContainer.classList.contains('is-visible')){
-            hideModal();
-        }
-     });
-
-     modalContainer.addEventListener('click', (e) =>{
-        let target = e.target;
-        if (target === modalContainer){
-            hideModal();
-        }
-
-    });
-        
-
     //using the function keyword, then only return the key-value pairs 
-   
     return {
         add: add,
         getAll:getAll,
@@ -215,9 +161,7 @@ let pokemonRepository = (function () {
 pokemonRepository.loadList().then(function(){
     pokemonRepository.getAll().forEach(function (pokemon) {
         pokemonRepository.addListItem(pokemon);
-});
-
-
+    });
 });
 
 
